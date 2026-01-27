@@ -7,7 +7,7 @@ import jakarta.annotation.PreDestroy;
 
 @Component
 public class LifecycleBean {
-  public LifecycleBean() {
+  public LifecycleBean() {  // 싱글톤 타입 -> 한 번만 호출
     System.out.println("[LifecycleBean] 생성자 호출됨 (Bean 생성)");
   }
 
