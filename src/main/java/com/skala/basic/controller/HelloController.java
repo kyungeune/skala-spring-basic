@@ -18,6 +18,9 @@ import com.skala.basic.service.HelloService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Map;
+import java.util.HashMap;
+
 @RestController
 @Slf4j
 public class HelloController {
@@ -32,11 +35,24 @@ public class HelloController {
   }
 
   @GetMapping("/hello")
-  public HelloResponse hello(@RequestParam(defaultValue = "SKALA") String name) {
-    // 서비스 호출하여 응답 객체 생성
-    log.info("/hello: GET {}", name);
-    return helloService.createMessage(name);
+  public HelloResponse getHello() {
+    HelloResponse response = new HelloResponse();
+    response.setMessage("SKALA에 오신 것을 환영합니다!");
+    response.setAge(100);
+    response.setName("SKALA");
+
+    // Map<String, String> responseMap = new HashMap<>();
+    // responseMap.put("message", "SKALA에 오신 것을 환영합니다!");
+
+    return response;
   }
+
+  // @GetMapping("/hello")
+  // public HelloResponse hello(@RequestParam(defaultValue = "SKALA") String name) {
+  //   // 서비스 호출하여 응답 객체 생성
+  //   log.info("/hello: GET {}", name);
+  //   return helloService.createMessage(name);
+  // }
 
   @PostMapping("/hello")
   public HelloResponse postHello(@Valid @RequestBody HelloRequest body) {
