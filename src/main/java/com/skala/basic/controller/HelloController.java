@@ -16,34 +16,33 @@ import com.skala.basic.service.CourseService;
 import com.skala.basic.service.HelloService;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 @RestController
 @Slf4j
+@RequiredArgsConstructor  // 생성자 주입 코드 삭제
 public class HelloController {
 
+  // @Autowired  // 너가 알아서 주입시켜줘
   private final HelloService helloService;
   private final CourseService courseService;
 
-  // 생성자 주입
-  public HelloController(HelloService helloService, CourseService courseService) {
-    this.helloService = helloService;
-    this.courseService = courseService;
+  @GetMapping("/hello")
+  public HelloResponse getHello(@RequestParam String name, @RequestParam int age) {
+    HelloResponse response = helloService.createMessage(name, age);
+
+    return response;
   }
 
-  @GetMapping("/hello")
-  public HelloResponse getHello() {
-    HelloResponse response = new HelloResponse();
-    response.setMessage("SKALA에 오신 것을 환영합니다!");
-    response.setAge(100);
-    response.setName("SKALA");
-
-    // Map<String, String> responseMap = new HashMap<>();
-    // responseMap.put("message", "SKALA에 오신 것을 환영합니다!");
-
+  @PostMapping("/hello")
+  public HelloResponse postHello(@RequestBody HelloRequest body){
+    HelloResponse response = helloService.createMessage(body.getName(), body.getId());
     return response;
   }
 
@@ -54,16 +53,16 @@ public class HelloController {
   //   return helloService.createMessage(name);
   // }
 
-  @PostMapping("/hello")
-  public HelloResponse postHello(@Valid @RequestBody HelloRequest body) {
-    log.info("/hello: POST {}", body.getName());
-    return helloService.createMessage(body.getName());
-  }
+  // @PostMapping("/hello")
+  // public HelloResponse postHello(@Valid @RequestBody HelloRequest body) {
+  //   log.info("/hello: POST {}", body.getName());
+  //   return helloService.createMessage(body.getName());
+  // }
 
-  @PostMapping("/courses/{name}")
-  public CourseResponse getClassInfo(@PathVariable String name, @RequestParam List<String> topics) {
-    // Service에서 CourseResponse 생성
-    log.info("/courses: {}", name);
-    return courseService.createCourse(name, topics);
-  }
+  // @PostMapping("/courses/{name}")
+  // public CourseResponse getClassInfo(@PathVariable String name, @RequestParam List<String> topics) {
+  //   // Service에서 CourseResponse 생성
+  //   log.info("/courses: {}", name);
+  //   return courseService.createCourse(name, topics);
+  // }
 }

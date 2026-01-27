@@ -7,9 +7,12 @@ import com.skala.basic.data.HelloResponse;
 @Service
 public class HelloService {
 
-  public HelloResponse createMessage(String name) {
+  public HelloResponse createMessage(String name, int age) {
     HelloResponse response = new HelloResponse();
     response.setMessage("안녕하세요, " + name + "님!");
+    response.setName(name);
+    response.setAge(age);
+    
     return response;
   }
 }
