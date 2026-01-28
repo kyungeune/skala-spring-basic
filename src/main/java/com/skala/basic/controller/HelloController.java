@@ -15,54 +15,52 @@ import com.skala.basic.data.HelloResponse;
 import com.skala.basic.service.CourseService;
 import com.skala.basic.service.HelloService;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Map;
-import java.util.HashMap;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 @RestController
-@Slf4j
-@RequiredArgsConstructor  // 생성자 주입 코드 삭제
+@Slf4j // 로그를 남길 수 있는 어노테이션
+@RequiredArgsConstructor
 public class HelloController {
 
-  // @Autowired  // 너가 알아서 주입시켜줘
   private final HelloService helloService;
   private final CourseService courseService;
 
+
+
   @GetMapping("/hello")
   public HelloResponse getHello(@RequestParam String name, @RequestParam int age) {
+    // log.debug("getHello: name={}, age={}, name, age");
+    // log.info("getHello: name={}, age={}, name, age");
+    // log.error("getHello: name={}, age={}, name, age");
     HelloResponse response = helloService.createMessage(name, age);
-
+    System.out.print(response);  // Param으로 전달되기 때문에, 사전에 지정한 값들만 받아옴
     return response;
   }
 
   @PostMapping("/hello")
-  public HelloResponse postHello(@RequestBody HelloRequest body){
-    HelloResponse response = helloService.createMessage(body.getName(), body.getId());
+  public HelloResponse postHello(@RequestBody HelloRequest body) {
+    HelloResponse response = helloService.createMessage(body.getName(), 25);
     return response;
   }
 
-  // @GetMapping("/hello")
-  // public HelloResponse hello(@RequestParam(defaultValue = "SKALA") String name) {
-  //   // 서비스 호출하여 응답 객체 생성
-  //   log.info("/hello: GET {}", name);
-  //   return helloService.createMessage(name);
-  // }
+  //@GetMapping("/hello")
+  //public HelloResponse hello(@RequestParam(defaultValue = "SKALA") String name) {
+  //  // 서비스 호출하여 응답 객체 생성
+  //  log.info("/hello: GET {}", name);
+  //  return helloService.createMessage(name);
+  //}
 
-  // @PostMapping("/hello")
-  // public HelloResponse postHello(@Valid @RequestBody HelloRequest body) {
-  //   log.info("/hello: POST {}", body.getName());
-  //   return helloService.createMessage(body.getName());
-  // }
+  //@PostMapping("/hello")
+  //public HelloResponse postHello(@Valid @RequestBody HelloRequest body) {
+  //  log.info("/hello: POST {}", body.getName());
+  //  return helloService.createMessage(body.getName());
+  //}
 
-  // @PostMapping("/courses/{name}")
-  // public CourseResponse getClassInfo(@PathVariable String name, @RequestParam List<String> topics) {
-  //   // Service에서 CourseResponse 생성
-  //   log.info("/courses: {}", name);
-  //   return courseService.createCourse(name, topics);
-  // }
+  @PostMapping("/courses/{name}")
+  public CourseResponse getClassInfo(@PathVariable String name, @RequestParam List<String> topics) {
+    // Service에서 CourseResponse 생성
+    // log.info("/courses: {}", name);
+    return courseService.createCourse(name, topics);
+  }
 }
